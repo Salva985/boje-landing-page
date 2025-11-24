@@ -10,11 +10,21 @@
     background-color: var(--white-marble);
     color: var(--black-charcoal);
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
   
   #hero {
     height: 100vh;
     background: url('../assets/img/hero-bg.jpg') center/cover no-repeat;
     background-color: var(--black-charcoal);
+    padding-top: 40px;
+  }
+
+  #hero img {
+    object-fit: cover;
+    height: 100vh;
   }
   
   #hero h1 {
@@ -33,4 +43,9 @@
   footer {
     background-color: var(--black-charcoal);
     color: var(--white-marble);
+  }
+
+  .page-wrapper {
+    margin-left: 10%;
+    margin-right: 10%;
   }
