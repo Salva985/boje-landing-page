@@ -1,0 +1,36 @@
+:root {
+    --black-charcoal: #121212;
+    --white-marble: #f9f9f9;
+    --neutral-grey: #c4c4c4;
+    --accent-color: #00ffff; /* You can change this later */
+  }
+  
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: var(--white-marble);
+    color: var(--black-charcoal);
+  }
+  
+  #hero {
+    height: 100vh;
+    background: url('../assets/img/hero-bg.jpg') center/cover no-repeat;
+    background-color: var(--black-charcoal);
+  }
+  
+  #hero h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--accent-color);
+  }
+  
+  #music iframe,
+  #music video {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  footer {
+    background-color: var(--black-charcoal);
+    color: var(--white-marble);
+  }
