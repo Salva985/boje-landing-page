@@ -48,6 +48,19 @@
     color: var(--accent-color);
   }
 
+  .about-img {
+    width: 250px;        
+    height: 250px;
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    transition: transform 0.3s ease;
+  }
+  
+  .about-img:hover {
+    transform: scale(1.05); 
+  }
+
+
   .album-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;

@@ -36,19 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
   
-    // Save new media to localStorage
-    function saveMedia(html) {
-      const mediaItems = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
-      mediaItems.push({ html })
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(mediaItems))
-    }
-  
-    function deleteMedia(index) {
-      const mediaItems = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
-      mediaItems.splice(index, 1)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(mediaItems))
-      loadSavedMedia()
-    }
+// Save to backend
+async function saveMedia(html) {
+  try {
+    await fetch('/api/media', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html })
+    })
+  } catch (err) {
+    console.error('Error saving media:', err)
+  }
+}
+
+// Load from backend
+async function loadSavedMedia() {
+  try {
+    const res = await fetch('/api/media')
+    const mediaItems = await res.json()
+    savedContainer.innerHTML = ''
+    mediaItems.forEach((item, index) => {
+      const wrapper = document.createElement('div')
+      wrapper.className = 'mb-4'
+      wrapper.innerHTML = item.html
+      savedContainer.appendChild(wrapper)
+    })
+  } catch (err) {
+    console.error('Error loading media:', err)
+  }
+}
   
     // Show preview only (does not save yet)
     function showPreview(html) {
