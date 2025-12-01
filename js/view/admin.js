@@ -34,35 +34,54 @@ document.addEventListener('DOMContentLoaded', () => {
   // 📤 ADD NEW MEDIA
   mediaForm.addEventListener('submit', (e) => {
     e.preventDefault()
-
+  
     const type = mediaType.value
     const url = mediaURL.value.trim()
-
+    let isValid = false
+    let previewHTML = ''
+  
     if (!type || !url) {
-      alert('Please fill in all fields.')
+      showInlineAlert('Please fill in all fields.')
       return
     }
-
-    // ---- PREVIEW ----
-    const preview = document.createElement('div')
-    preview.className = 'mb-3'
-
+  
+    // Generate preview & validate
     if (type === 'spotify') {
-      const embed = url.replace('/artist/', '/embed/artist/')
-      preview.innerHTML = `<iframe style="border-radius:12px" src="${embed}" width="100%" height="152" frameborder="0"></iframe>`
+      const embedUrl = convertSpotifyToEmbed(url)
+      if (embedUrl) {
+        previewHTML = `<iframe style="border-radius:12px" src="${embedUrl}" width="100%" height="152" frameborder="0" allow="encrypted-media"></iframe>`
+        isValid = true
+      }
     } else if (type === 'youtube') {
       const id = extractYouTubeID(url)
-      preview.innerHTML = id
-        ? `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0"></iframe>`
-        : `<p class="text-warning">Invalid YouTube link</p>`
+      if (id) {
+        previewHTML = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0"></iframe>`
+        isValid = true
+      }
     } else if (type === 'video') {
-      preview.innerHTML = `<video controls class="w-100 rounded"><source src="${url}" type="video/mp4"></video>`
+      if (url.endsWith('.mp4')) {
+        previewHTML = `<video controls class="w-100 rounded"><source src="${url}" type="video/mp4"></video>`
+        isValid = true
+      }
     }
-
+  
+    if (!isValid) {
+      showInlineAlert("❌ Invalid URL. Please paste a correct Spotify, YouTube or .mp4 link.")
+      mediaPreview.innerHTML = '' // clear previous preview if any
+      return
+    }
+  
+    // Hide alert if passed
+    hideInlineAlert()
+  
+    // Show preview
     mediaPreview.innerHTML = ''
+    const preview = document.createElement('div')
+    preview.className = 'mb-3'
+    preview.innerHTML = previewHTML
     mediaPreview.appendChild(preview)
-
-    // ---- SAVE TO BACKEND ----
+  
+    // Save to backend
     fetch('/api/media', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -71,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(() => {
         mediaForm.reset()
+        mediaPreview.innerHTML = ''
         loadSavedMedia()
       })
       .catch(err => {
@@ -91,8 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           let html = ''
           if (item.type === 'spotify') {
-            const embedUrl = item.url.replace('/artist/', '/embed/artist/')
-            html = `<iframe style="border-radius:12px" src="${embedUrl}" width="100%" height="152" frameborder="0"></iframe>`
+            const embedUrl = convertSpotifyToEmbed(item.url)
+            html = embedUrl
+              ? `<iframe style="border-radius:12px" src="${embedUrl}" width="100%" height="152" frameborder="0" allow="encrypted-media"></iframe>`
+              : `<p class="text-warning">Invalid Spotify URL</p>`
           } else if (item.type === 'youtube') {
             const id = extractYouTubeID(item.url)
             html = id
@@ -136,5 +158,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const regex = /(?:youtube\.com.*(?:v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     const match = url.match(regex)
     return match ? match[1] : null
+  }
+
+  function convertSpotifyToEmbed(url) {
+    try {
+      const cleanUrl = url.split('?')[0]
+  
+      const regex = /https?:\/\/open\.spotify\.com\/(track|album|artist|playlist)\/([a-zA-Z0-9]+)/
+      const match = cleanUrl.match(regex)
+  
+      if (!match) return null
+  
+      const [, type, id] = match
+      return `https://open.spotify.com/embed/${type}/${id}`
+    } catch (e) {
+      console.error('Spotify embed error:', e)
+      return null
+    }
+  }
+
+  function showInlineAlert(message) {
+    const alertBox = document.getElementById('invalid-url-alert')
+    alertBox.textContent = message
+    alertBox.classList.remove('d-none')
+  
+    setTimeout(() => {
+      alertBox.classList.add('d-none')
+    }, 4000)
+  }
+
+  function hideInlineAlert() {
+    const alertBox = document.getElementById('invalid-url-alert')
+    if (alertBox) {
+      alertBox.classList.add('d-none')
+      alertBox.textContent = ''
+    }
   }
 })
