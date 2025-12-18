@@ -4,19 +4,11 @@
     "url": "https://open.spotify.com/artist/6H5GRoWj00kN40WG1dV2vW"
   },
   {
-    "type": "youtube",
-    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-    "type": "youtube",
-    "url": "https://www.youtube.com/watch?v=XzkAgit8U3s"
-  },
-  {
     "type": "spotify",
     "url": "https://open.spotify.com/track/3pmRU3YOpsCv76m907rody?si=99c7bf31b308430f"
   },
   {
-    "type": "spotify",
-    "url": "https://open.spotify.com/album/0FGaOYu069P8ExCWXn69Mt?si=nQCzlfS9T8iAyrGPsmz73Q"
+    "type": "youtube",
+    "url": "https://www.youtube.com/watch?v=ETzkeI00CSc"
   }
 ]
