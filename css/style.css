@@ -15,6 +15,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.invert-logo {
+  filter: brightness(0) invert(1);
+}
+
 .navbar {
   height: 120px;
   padding-top: 1rem;
@@ -128,10 +132,6 @@ footer {
   transform: scale(1.2);
 }
 
-/* .white-icon {
-  filter: invert(1);
-} */
-
 .page-wrapper {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -148,4 +148,21 @@ iframe {
   max-width: 800px;
   margin: 0 auto;
   display: block;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background-color: rgba(18, 18, 18, 0.95); /* matches --black-charcoal, with opacity */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .navbar-collapse .nav-link {
+    color: var(--white-marble) !important;
+  }
+
+  .navbar-collapse .nav-link:hover {
+    color: var(--accent-color) !important;
+  }
 }

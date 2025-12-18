@@ -5,6 +5,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import photosRoutes from './routes/photos.js'
 import fileUpload from 'express-fileupload'
+import contactRouter from './routes/contact.js'
+import 'dotenv/config'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -20,6 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(fileUpload())
 app.use('/api/photos', photosRoutes)
+app.use('/api/contact', contactRouter)
 
 // Serve static frontend files (html, css, js, assets)
 app.use(express.static(path.join(__dirname, '../public'))) // serve root folder
