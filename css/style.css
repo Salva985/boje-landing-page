@@ -145,9 +145,11 @@ footer {
 }
 
 iframe {
-  max-width: 800px;
-  margin: 0 auto;
-  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 @media (max-width: 991.98px) {
@@ -165,4 +167,13 @@ iframe {
   .navbar-collapse .nav-link:hover {
     color: var(--accent-color) !important;
   }
+}
+
+.card iframe,
+.card video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: block;
 }
