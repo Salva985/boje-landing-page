@@ -3,6 +3,8 @@ import express from 'express'
 import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import photosRoutes from './routes/photos.js'
+import fileUpload from 'express-fileupload'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -14,12 +16,17 @@ const __dirname = path.dirname(__filename)
 // Allow CORS and JSON parsing
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use(fileUpload())
+app.use('/api/photos', photosRoutes)
 
 // Serve static frontend files (html, css, js, assets)
-app.use(express.static(path.join(__dirname, '..'))) // serve root folder
+app.use(express.static(path.join(__dirname, '../public'))) // serve root folder
 app.use('/assets', express.static(path.join(__dirname, '..', 'assets')))
 app.use('/css', express.static(path.join(__dirname, '..', 'css')))
 app.use('/js', express.static(path.join(__dirname, '..', 'js')))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // Example API route
 app.get('/api/ping', (req, res) => {
@@ -101,6 +108,7 @@ app.post('/api/contact', (req, res) => {
   
     res.json({ message: 'Thank you for contacting us!' })
   })
+
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`)
